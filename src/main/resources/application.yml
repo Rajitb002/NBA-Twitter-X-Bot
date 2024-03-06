@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://stampy.db.elephantsql.com:5432/thatssae
+    username: thatssae
+    password: ybpk5j-4-OzFursdcdBbyJD_yyZ8dR4E
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
