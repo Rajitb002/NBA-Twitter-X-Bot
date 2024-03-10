@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name =  "Stats")
 public class Stats {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

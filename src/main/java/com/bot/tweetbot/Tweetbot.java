@@ -8,18 +8,19 @@ import io.github.redouane59.twitter.signature.TwitterCredentials;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
+import java.util.List;
 
-import java.io.*;
-import java.util.Scanner;
 
 @RestController()
 @RequestMapping("bot")
 public class Tweetbot {
 
     private final StatsRepository statsRepository;
+    private final CountRepository countRepository;
 
-    public Tweetbot(StatsRepository statsRepository) {
+    public Tweetbot(StatsRepository statsRepository, CountRepository countRepository) {
         this.statsRepository = statsRepository;
+        this.countRepository = countRepository;
     }
 
     /**
@@ -29,7 +30,7 @@ public class Tweetbot {
     @PostMapping("miscPost")
    public void mockpost(@RequestBody String data)  {
         ITwitterClientV2 twitterClient = new TwitterClient(TwitterCredentials.builder()
-                .accessToken(")
+                .accessToken("")
                 .accessTokenSecret("")
                 .apiKey("")
                 .apiSecretKey("")
@@ -38,7 +39,7 @@ public class Tweetbot {
    }
 
     /**
-     * Connects to twitter bot and posts nba stats
+     * Connects to Twitter bot and posts nba stats
      */
     @PostMapping("post")
     public void post() throws JsonProcessingException {
@@ -50,7 +51,6 @@ public class Tweetbot {
                 .build());
         String stats = getData();
 
-
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(stats);
             JsonNode dataNode = rootNode.path("data");
@@ -60,7 +60,6 @@ public class Tweetbot {
             String lastName = dataNode.path("last_name").asText();
             String teamName = dataNode.path("team").path("name").asText();
             String position = dataNode.path("position").asText();
-
 
         Stats stats1 = new Stats(id,lastName,firstName,position,teamName);
         System.out.println(stats1.toString());
@@ -74,24 +73,21 @@ public class Tweetbot {
      */
    public String getData() {
 
-       int position = 2;
-       try {
-           File file = new File("src\\main\\java\\player.txt");
-           file.setWritable(true);
-           file.setReadable(true);
-           Scanner reader = new Scanner(file);
-           position =  reader.nextInt();
-           reader.close();
-           FileWriter writer = new FileWriter(file);
-           writer.write(Integer.toString(position + 1));
-           writer.close();
-
-       } catch (Exception e){
-        System.out.println(e.getMessage());
+       List<Count> countList = countRepository.findAll();
+       int size =countList.size();
+       if( size != 1){
+           if(size != 0){
+               countRepository.deleteAll();
+           }
+           Count count = new Count(1,1);
+           countRepository.save(count);
        }
 
+       Count count = countRepository.getReferenceById(1);
+       int position =  count.getCount();
+       count.setCount(position + 1);
+       countRepository.save(count);
        //Create a get request to nba api
-       StatsController statsController = new StatsController(statsRepository);
        RestClient restClient = RestClient.create();
        return  restClient.get()
                .uri("https://api.balldontlie.io/v1/players/{position}", position)
