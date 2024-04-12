@@ -14,7 +14,7 @@
     2) Generate authorization API for balldontlie
     3) Create an online postgres database (I used elephantSQL)
 
-You can also make a jar and execute it by running "./mvnw package" in /tweetbot using java -jar "jarName"
+You can also make a jar by running "./mvnw package" in /tweetbot and execute using java -jar "jarName"
 
 **II. Contribute**
 
@@ -27,7 +27,7 @@ You can also make a jar and execute it by running "./mvnw package" in /tweetbot 
 
 Some personal pointers:
 
-    1)Remove dependencies and develop more in-house API methods in tweetbot
+    1) Remove dependencies and develop more in-house API methods in tweetbot
   
   
 
