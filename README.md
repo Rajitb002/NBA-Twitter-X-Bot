@@ -1,3 +1,4 @@
+*Check out my bot at: "https://x.com/NbabotX"*
 Automated bot that tweets statistics and information of NBA players on a daily basis. Done in Spring Boot, deployed through Render!
 
 **I. BUILD**
